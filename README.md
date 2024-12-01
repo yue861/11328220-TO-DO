@@ -39,18 +39,28 @@ def show_tasks():
     print()
 def delete_task():
     print("\n=== 刪除任務 ===")
-    show_tasks()
-
-    task_type = input("請選擇任務類型（1: 未完成, 2: 已完成）：").strip()
-    if task_type not in ["1", "2"]:
+    task_type = int(input("請選擇任務類型（1: 未完成, 2: 已完成）：").strip())
+    if  task_type==1:
+        print("\n=== 未完成的任務 ===")
+        if not pending_tasks:
+            print("\n  目前沒有任何任務！\n")
+            return
+        else:
+            for idx, task in enumerate(pending_tasks, start=1):
+                print(f"  {idx}. {task['title']} ({task['description'][:40]})") # 描述部份最多顯示 40 個字元
+                task_list = pending_tasks 
+    elif task_type==2:
+        print("\n=== 已完成的任務 ===")
+        if not completed_tasks:
+            print("\n  目前沒有任何任務！\n")
+            return
+        else:
+            for idx, task in enumerate(completed_tasks, start=1):
+                print(f"  {idx}. {task['title']} ({task['description'][:40]})") # 描述部份最多顯示 40 個字元
+                task_list = completed_tasks
+    else:
         print("\n無效的選擇！請輸入 1 或 2。\n")
         return
-
-    task_list = pending_tasks if task_type == "1" else completed_tasks
-    if not task_list:
-        print("\n選擇的任務清單中沒有任務。\n")
-        return
-
     try:
         task_idx = int(input("請輸入要刪除的任務編號：")) - 1
         if 0 <= task_idx < len(task_list):
@@ -64,10 +74,8 @@ def complete_task():
     if not pending_tasks:
         print("\n目前沒有未完成的任務！\n")
         return
-    print("\n=== 未完成的任務 ===")
-    if not pending_tasks:
-            print("\n  目前沒有任何任務！\n")
-    else:
+    else:    
+        print("\n=== 未完成的任務 ===")
         for idx, task in enumerate(pending_tasks, start=1):
             print(f"  {idx}. {task['title']} ({task['description'][:40]})") # 描述部份最多顯示 40 個字元
         task_idx = int(input("請輸入要完成的任務編號：")) - 1
@@ -105,8 +113,6 @@ def main():
 
 # 啟動主程式
 main()
-
-
 
 
 
