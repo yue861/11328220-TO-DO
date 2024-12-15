@@ -7,6 +7,7 @@ import sys
 # 初始化任務列表
 pending_tasks = []
 completed_tasks = []
+all_tasks = []
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -35,6 +36,9 @@ class MainWindow(QWidget):
         # 事件連接
         self.show_tasks_button.clicked.connect(self.show_tasks_text)
         self.add_task_button.clicked.connect(self.add_task_text)
+        self.delete_tasks_button.clicked.connect(self.delete_tasks_text)
+        self.complete_tasks_button.clicked.connect( self.complete_tasks_text)
+        self.quit_system_button.clicked.connect(self.quit_system_text)
         
     
     def add_task_text(self):
@@ -76,6 +80,7 @@ class MainWindow(QWidget):
                 "description": text1 or '',
                 "due_date": text2 or '',
             }
+            all_tasks.append(new_task)
             pending_tasks.append(new_task)
         else:
             QMessageBox.warning(self, "警告", "輸入欄位為空！")
@@ -103,7 +108,7 @@ class MainWindow(QWidget):
         if not pending_tasks:
             self.label.setText("=== 未完成的任務 ===\n目前沒有任何任務！")
         else:
-            task_list = "\n".join([f"{idx}. {task['title']} ({task['description'][:40]})"
+            task_list = "\n".join([f"{idx}. {task['title']} ({task['description'][:40]}) ({task['due_date'][:40]})"
                                   for idx, task in enumerate(pending_tasks, start=1)])
             self.label.setText(f"=== 未完成的任務 ===\n{task_list}")
 
@@ -111,7 +116,7 @@ class MainWindow(QWidget):
         if not completed_tasks:
             self.label.setText("=== 已完成的任務 ===\n目前沒有任何任務！")
         else:
-            task_list = "\n".join([f"{idx}. {task['title']} ({task['description'][:40]})"
+            task_list = "\n".join([f"{idx}. {task['title1']} ({task['description1'][:40]})({task['due_date1'][:40]})"
                                   for idx, task in enumerate(completed_tasks, start=1)])
             self.label.setText(f"=== 已完成的任務 ===\n{task_list}")
 
@@ -124,6 +129,55 @@ class MainWindow(QWidget):
     def quit_system_text(self):
         # 離開系統
         QApplication.quit()
+    def delete_tasks_text(self):
+        if not pending_tasks or completed_tasks:
+            self.label.setText("目前沒有任何任務！")
+        else:
+            task_list = "\n".join([f"{idx}. {task['title']} ({task['description'][:40]})"
+                                  for idx, task in enumerate(pending_tasks and completed_tasks , start=1)])
+            self.label.setText(f"=== 任務 ===\n{task_list}")
+        self.task_number1_field = QLineEdit(self)
+        self.task_number1_field.setPlaceholderText("在這裡輸入需要刪除的任務...")
+        number1 = self.task_number1_field.text()
+        text = self.task_name_input_field.text()
+        if number1.strip():  # 檢查是否有輸入任務名稱
+            self.label.setText(f"任務：{text}已刪除")
+            task = {
+                "title1": text,
+            }
+            completed_tasks.remove(task)
+            pending_tasks.remove(task)
+            all_tasks.remove(task)
+        else:
+            QMessageBox.warning(self, "警告", "輸入欄位為空！")
+
+
+    def complete_tasks_text(self):
+        if not pending_tasks:
+            self.label.setText("=== 未完成的任務 ===\n目前沒有任何任務！")
+        else:
+            task_list = "\n".join([f"{idx}. {task['title']} ({task['description'][:40]})"
+                                  for idx, task in enumerate(pending_tasks, start=1)])
+            self.label.setText(f"=== 未完成的任務 ===\n{task_list}")
+        self.task_number_field = QLineEdit(self)
+        self.task_number_field.setPlaceholderText("在這裡輸入編號更改任務進度...")
+        number = self.task_number_field.text()
+        text = self.task_name_input_field.text()
+        text1 = self.task_discribe_input_field.text()
+        text2 = self.task_deadline_input_field.text()
+        if number.strip():  # 檢查是否有輸入任務名稱
+            self.label.setText(f"任務：{text}已完成")
+            completed_task = {
+                "title1": text,
+                "description1": text1 or '',
+                "due_date1": text2 or '',
+            }
+            pending_tasks.remove(completed_task)
+            completed_tasks.append(completed_task)
+        else:
+            QMessageBox.warning(self, "警告", "輸入欄位為空！")
+
+
 
 # 主程式入口
 if __name__ == "__main__":
@@ -131,6 +185,7 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
+
 
     
 
