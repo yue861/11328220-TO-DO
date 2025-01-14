@@ -100,6 +100,7 @@
         self.add_button.clicked.connect(self.add_task_confirm)
         self.return_button.clicked.connect(self.init_main_layout)
 ```
+
 - **`add_task_confirm`**：確認新增任務。
 ```python
  def add_task_confirm(self):
