@@ -145,6 +145,22 @@
         self.display_tasks("已完成任務", completed_tasks)
 ```
 - **`display_tasks`**：通用任務顯示介面。
+  ```python 
+  def display_tasks(self, title, tasks):
+        """通用任務顯示介面"""
+        self.clear_layout()
+        task_list = "\n".join(
+            [f"{idx + 1}. {task['title']} ({task['description']}) - {task['due_date']}" for idx, task in enumerate(tasks)]
+        )
+        self.label = QLabel(f"{title}：\n{task_list if task_list else '暂無任務'}", self)
+        self.return_button = QPushButton("返回任務清單", self)
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.return_button)
+        self.setLayout(layout)
+        # 信號連接
+        self.return_button.clicked.connect(self.show_tasks)
+  ```
 - **`complete_task`**：切換到完成任務介面。
 ```python  
   def complete_task(self):
