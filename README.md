@@ -99,10 +99,6 @@
         # 信號連接
         self.add_button.clicked.connect(self.add_task_confirm)
         self.return_button.clicked.connect(self.init_main_layout)
-```
-
-- **`add_task_confirm`**：確認新增任務。
-```python
  def add_task_confirm(self):
         """确認添加任務"""
         name = self.task_name_input.text().strip()
@@ -163,7 +159,7 @@
 
 ```
 - **`modify_task`**：通用任務修改介面（適用於完成與刪除）。
-- ```python  
+```python  
   def modify_task(self, action, source_list, target_list, action_name):
         """通用任務修改介面"""
         self.clear_layout()
