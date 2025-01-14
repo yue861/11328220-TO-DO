@@ -75,7 +75,7 @@
         self.quit_system_button.clicked.connect(QApplication.quit)
 ```
 - **`add_task`**：切換到新增任務介面。
-- ```python  
+```python  
    def add_task(self):
         """新增任務畫面"""
         self.clear_layout()
@@ -146,7 +146,7 @@
 ```
 - **`display_tasks`**：通用任務顯示介面。
 - **`complete_task`**：切換到完成任務介面。
-- ```python  
+```python  
   def complete_task(self):
         """完成任務介面"""
         self.modify_task("完成任務", pending_tasks, completed_tasks, "完成")
